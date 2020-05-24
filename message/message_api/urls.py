@@ -1,13 +1,9 @@
 from django.urls import path
 from message_api import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('', views.sanity_check),
-    path('message/', views.write_new_message),
-    # path('documents_web/<int:company_id>/', views.check_document_status),
-    # path('documents_web/document/<str:document_id>/<str:document_status>/<str:model_type>/',
-    #      views.retrieve_document_data),
-    # path('documents_web/document/user/', views.update_user_feedback),
-    # path('documents_web/document/user/approve_all/', views.update_all),
-    # path('documents_web-delete/<str:document_id>/', views.documents_web_delete),
+    path('message/', views.handle_given_message),
+    path('message/<str:get_all_messages>/', views.query_messages),
+    path('api-token-auth/', obtain_auth_token),
 ]

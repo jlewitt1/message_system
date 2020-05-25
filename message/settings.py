@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import dj_database_url
+# import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -93,11 +93,11 @@ WSGI_APPLICATION = 'message.wsgi.application'
 #     }
 # }
 
-DATABASE_URL = 'postgres://psswaxbqnxwmgb:727397f2913bf090e80c814cc2e293727253e68bd7bcf0f025ca48560bb09d75@ec2-52-44-166-58.compute-1.amazonaws.com:5432/ddee70pp7nrbod'
-DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL)
-}
+# DATABASE_URL = 'postgres://psswaxbqnxwmgb:727397f2913bf090e80c814cc2e293727253e68bd7bcf0f025ca48560bb09d75@ec2-52-44-166-58.compute-1.amazonaws.com:5432/ddee70pp7nrbod'
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=DATABASE_URL)
+# }
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -142,3 +142,7 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+import django_heroku
+
+django_heroku.settings(locals())

@@ -7,7 +7,7 @@ urlpatterns = [
     path('message/<int:message_id>/', views.handle_given_message),
     path('message/query/', views.query_messages),
     path('message/query/<str:message_type>/', views.query_messages),
-    path('message/delete/<str:user_type>/', views.remove_message),
+    path('message/delete/type/<str:user_type>/', views.remove_message),
     path('message/delete/id/<int:message_id>/', views.remove_message),
     path('api-token-auth/', obtain_auth_token),
 ]

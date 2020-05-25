@@ -81,7 +81,6 @@ WSGI_APPLICATION = 'message.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -93,11 +92,6 @@ WSGI_APPLICATION = 'message.wsgi.application'
 #     }
 # }
 
-# DATABASE_URL = 'postgres://psswaxbqnxwmgb:727397f2913bf090e80c814cc2e293727253e68bd7bcf0f025ca48560bb09d75@ec2-52-44-166-58.compute-1.amazonaws.com:5432/ddee70pp7nrbod'
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=DATABASE_URL)
-# }
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -132,17 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 import django_heroku
-
 django_heroku.settings(locals())

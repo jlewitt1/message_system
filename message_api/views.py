@@ -4,8 +4,8 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from message_api.serializers import MessagesSerializer
-from message_api.utils import handle_all_messages_queried, get_all_messages_for_user, delete_message_for_given_user, \
-    read_single_message_for_user, get_user_type_for_deleting_message
+from message_api.utils import get_all_messages_for_user, delete_message_for_given_user, read_single_message_for_user, \
+    validate_user_type_for_deleting_message
 
 
 @csrf_exempt
@@ -59,11 +59,10 @@ def remove_message(request, user_type='', message_id=''):
     """deletes given message for user by id if provided - otherwise delete most recent based on user type"""
     if request.method == 'DELETE':
         user = request.user.email
-        is_sender = get_user_type_for_deleting_message(user_type)
-        if is_sender is None:
-            return Response({"Error": f"Invalid url param {user_type}"},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        res = delete_message_for_given_user(user, is_sender, message_id)
+        valid_user_type = validate_user_type_for_deleting_message(user_type.lower())
+        if not valid_user_type and not message_id:  # must provide either a valid user type or message_id
+            return Response({"Error": f"Invalid url param"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        res = delete_message_for_given_user(user, valid_user_type, message_id)
         if not res:  # if error with querying table or record does not exist
             return Response({"Error": f"Failed to delete record for user {user}"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

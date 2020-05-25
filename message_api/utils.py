@@ -45,12 +45,12 @@ def get_all_messages_for_user(receiver, query_all):
     return res
 
 
-def delete_most_recent_message(is_sender, user):
+def delete_most_recent_message(user_type, user):
     try:
-        if is_sender:  # if owner then delete the entire message
+        if user_type == 'owner':  # delete the entire message
             query_res = Messages.objects.filter(sender=user).latest('creation_date').delete()
             return handle_delete_query_response(query_res)
-        else:  # if recipient then do not delete message - just delete for recipient (set to empty string)
+        else:  # if receiver then do not delete message - just delete for recipient (set to empty string)
             latest_msg = Messages.objects.filter(receiver=user).latest('creation_date')
             latest_msg.receiver = ''
             latest_msg.save()
@@ -59,7 +59,7 @@ def delete_most_recent_message(is_sender, user):
         return False
 
 
-def delete_message_for_given_user(user, is_sender, message_id):
+def delete_message_for_given_user(user, user_type, message_id):
     """handles deletion of a given message based on whether user is owner or recipient (and whether id is provided)"""
     if message_id:  # if request to delete a specific message by id (regardless of whether user is owner / recipient)
         try:
@@ -68,14 +68,10 @@ def delete_message_for_given_user(user, is_sender, message_id):
         except Messages.DoesNotExist:
             return False
     else:
-        res = delete_most_recent_message(is_sender, user)
+        res = delete_most_recent_message(user_type, user)
         return res
 
 
-def get_user_type_for_deleting_message(user_type):
-    if user_type.lower() == 'owner':
-        return True
-    elif user_type.lower() == 'receiver':
-        return False
-    else:  # invalid user type
-        return None
+def validate_user_type_for_deleting_message(user_type):
+    if user_type == 'owner' or user_type == 'receiver':
+        return user_type.lower()
